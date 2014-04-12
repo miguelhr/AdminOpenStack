@@ -1,4 +1,6 @@
 import novaclient.v1_1.client as nvclient
+from keystoneclient.v2_0 import client
+
 
 import os
 
@@ -19,7 +21,7 @@ def get_nova_creds():
     return d
 
 creds = get_nova_creds()
+creds2 = get_keystone_creds()
 
 nova = nvclient.Client(**creds)
-
-nova.servers.list()
+keystone = client.Client(**creds2)
