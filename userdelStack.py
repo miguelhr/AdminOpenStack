@@ -36,10 +36,10 @@ infousuario = keystone.users.find(name=sys.argv[1])
 listatenant=[];
 
 #Obtener proyectos del usuario elegido
-    print "El usuario %s tiene los proyectos" %  infousuario.name
-    for tenant in keystone.tenants.list():
-        for tenant_user in tenant.list_users():
-            if infousuario.id in tenant_user.id:
+print "El usuario %s tiene los proyectos" %  infousuario.name
+for tenant in keystone.tenants.list():
+    for tenant_user in tenant.list_users():
+        if infousuario.id in tenant_user.id:
             listatenant.append(tenant.id)
             print tenant.name
 
@@ -48,5 +48,5 @@ for i in listatenant:
     if len(keystone.tenants.list_users(tenant=i)) > 1:
         print "No se puede borrar el proyecto con id %s porque pertenece a mas de un usuario" % i
     else:
-        print "se va a eliminar el proycto con id %s" % i
+        print "se va a eliminar el proyecto con id %s" % i
 
