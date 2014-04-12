@@ -35,7 +35,7 @@ else:
 infousuario = keystone.users.find(name=sys.argv[1])
 
 #Obtener proyectos del usuario elegido
-    print "El usuario %s tienes los proyectos" %  sys.argv[1]
+    print "El usuario %s tiene los proyectos" %  infousuario.name
     for tenant in keystone.tenants.list():
         for tenant_user in tenant.list_users():
             if infousuario.id in tenant_user.id:
