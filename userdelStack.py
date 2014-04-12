@@ -44,9 +44,13 @@ for tenant in keystone.tenants.list():
             print tenant.name
 
 #Que proyectos pertenecen a mas de un usuario
-for i in listatenant:
-    if len(keystone.tenants.list_users(tenant=i)) > 1:
-        print "No se puede borrar el proyecto con id %s porque pertenece a mas de un usuario" % i
+for a in listatenant:
+    if len(keystone.tenants.list_users(tenant=a)) > 1:
+        print "No se puede borrar el proyecto con id %s porque pertenece a mas de un usuario" % a
+        print "Los usuarios son:"
+        usutenant=keystone.tenants.list_users(tenant=a)
+        for i in usutenant:
+            print i.name
     else:
-        print "se va a eliminar el proyecto con id %s" % i
+        print "se va a eliminar el proycto con id %s" % a
 
