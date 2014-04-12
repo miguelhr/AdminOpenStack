@@ -9,7 +9,7 @@ if len(sys.argv) > 2 or len(sys.argv) < 2:
     print "userdelStack.py <usuario>"
 
 else:
-    def get_keystone_creds()
+    def get_keystone_creds():
         d = {}
         d['username'] = os.environ['OS_USERNAME']
         d['password'] = os.environ['OS_PASSWORD']
@@ -31,15 +31,13 @@ else:
     nova = nvclient.Client(**creds)
     keystone = client.Client(**creds2)
 
-    nova.servers.list()
-
-
 #Obtener informacion de usuario
-infousuario = keystone.users.find(name=sys.argv[2])
+infousuario = keystone.users.find(name=sys.argv[1])
 
 #Obtener proyectos del usuario elegido
-for tenant in keystone.tenants.list():
+    print "El usuario %s tienes los proyectos" %  sys.argv[1]
+    for tenant in keystone.tenants.list():
         for tenant_user in tenant.list_users():
-                if users_list.id in tenant_user.id:
-                        print "El usuario %s tienes los proyectos" %  sys.argv[2]
-                        print tenant.name 
+            if infousuario.id in tenant_user.id:
+                print tenant.name
+
