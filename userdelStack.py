@@ -62,3 +62,5 @@ for a in listatenant:
             if a in instancias.tenant_id:
                 listainstancias.append(instancias.tenant_id)
                 print instancias.name
+                nova.servers.delete(instancias.id)
+
