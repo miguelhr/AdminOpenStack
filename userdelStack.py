@@ -52,5 +52,13 @@ for a in listatenant:
         for i in usutenant:
             print i.name
     else:
-        print "se va a eliminar el proycto con id %s" % a
+        print "se va a eliminar el proyecto con id %s" % a
 
+#Eliminar todas las instancias asociadas a un proyecto
+        print "El proyecto %s tiene las instancias" %  a
+        totalinstancias=nova.servers.list(search_opts={'all_tenants': True})
+        listainstancias=[];
+        for instancias in totalinstancias:
+            if a in instancias.tenant_id:
+                listainstancias.append(instancias.tenant_id)
+                print instancias.name
