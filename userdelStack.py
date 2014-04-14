@@ -1,6 +1,7 @@
 import novaclient.v1_1.client as nvclient
 from keystoneclient.v2_0 import client
 from neutronclient.v2_0 import client as neuclient
+from cinderclient.v2 import client as cinderclient
 
 import sys 
 import os
@@ -33,15 +34,23 @@ else:
         d['auth_url'] = os.environ['OS_AUTH_URL']
         d['tenant_name'] = os.environ['OS_TENANT_NAME']
         return d
+    
+    def get_cinder_credentials():
+        d = [os.environ['OS_USERNAME'],
+        os.environ['OS_PASSWORD'],
+        os.environ['OS_TENANT_NAME'],
+        os.environ['OS_AUTH_URL']]
+        return d
         
     creds = get_nova_creds()
     creds2 = get_keystone_creds()
     credentials = get_credentials()
-
+    creds3 = get_cinder_credentials()
 
     nova = nvclient.Client(**creds)
     keystone = client.Client(**creds2)
     neutron = client.Client(**credentials)
+    cinder = cinderclient.Client(*creds3)
 
 #Obtener informacion de usuario.
 infousuario = keystone.users.find(name=sys.argv[1])
