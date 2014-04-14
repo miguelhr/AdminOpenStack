@@ -1,5 +1,6 @@
 import novaclient.v1_1.client as nvclient
 from keystoneclient.v2_0 import client
+from neutronclient.v2_0 import client as neuclient
 
 import sys 
 import os
@@ -28,8 +29,10 @@ else:
     creds = get_nova_creds()
     creds2 = get_keystone_creds()
 
+
     nova = nvclient.Client(**creds)
     keystone = client.Client(**creds2)
+    neutron = neuclient.Client(**creds)
 
 #Obtener informacion de usuario
 infousuario = keystone.users.find(name=sys.argv[1])
