@@ -83,7 +83,7 @@ for a in listatenant:
                 print instancias.name
                 nova.servers.delete(instancias.id)
 
-#Eliminar todas los grupos de seguridad asociadas a un proyecto.
+#Eliminar todos los grupos de seguridad asociadas a un proyecto.
         print "El proyecto %s tiene los grupos de seguridad:" %  a
         totalgruposeguridad = neutron.list_security_groups()
         for i in totalgruposeguridad:
@@ -92,4 +92,9 @@ for a in listatenant:
                 print b['name']
                 neutron.delete_security_group(b['id'])
 
-
+#Eliminar todos los snapshots de volumenes asociadas a un proyecto.
+        print "El proyecto %s tiene los snapshots de volumenes:" %  a
+        totalsnap_volu=cinder.volume_snapshots.list(search_opts={'all_tenants': True})
+        for snapvolu in totalsnap_volu:
+            if a in snapvolu.tenant_id:
+                print snapvolu.name
