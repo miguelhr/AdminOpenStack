@@ -105,3 +105,11 @@ for a in listatenant:
         for i in totalvolu:
             if a in i._info['os-vol-tenant-attr:tenant_id']:
                 print i.name
+                
+#Eliminar todos las IP flotantes de un proyecto.
+        print "El proyecto %s tiene las IP flotantes:" %  a
+        totalipflota = neutron.list_floatingips()
+        for i in totalipflota:
+            for b in totalipflota[i]:
+                if a in b['tenant_id']:
+                print b['floating_ip_address']
