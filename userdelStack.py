@@ -2,6 +2,7 @@ import novaclient.v1_1.client as nvclient
 from keystoneclient.v2_0 import client
 from neutronclient.v2_0 import client as neuclient
 from cinderclient.v2 import client as cinderclient
+import glanceclient.v2.client as glclient
 
 import sys 
 import os
@@ -46,11 +47,13 @@ else:
     creds2 = get_keystone_creds()
     credentials = get_credentials()
     creds3 = get_cinder_credentials()
+    glance_endpoint = keystone.service_catalog.url_for(service_type='image',endpoint_type='publicURL')
 
     nova = nvclient.Client(**creds)
     keystone = client.Client(**creds2)
     neutron = neuclient.Client(**credentials)
     cinder = cinderclient.Client(*creds3)
+    glance = glclient.Client(glance_endpoint, token=keystone.auth_token)
 
 #Obtener informacion de usuario.
 infousuario = keystone.users.find(name=sys.argv[1])
