@@ -49,7 +49,7 @@ else:
 
     nova = nvclient.Client(**creds)
     keystone = client.Client(**creds2)
-    neutron = client.Client(**credentials)
+    neutron = neuclient.Client(**credentials)
     cinder = cinderclient.Client(*creds3)
 
 #Obtener informacion de usuario.
@@ -87,7 +87,7 @@ for a in listatenant:
         print "El proyecto %s tiene los grupos de seguridad:" %  a
         totalgruposeguridad = neutron.list_security_groups()
         for i in totalgruposeguridad:
-            for b in sg[i]:
+            for b in totalgruposeguridad[i]:
                 if a in b['tenant_id']:
                 print b['name']
                 neutron.delete_security_group(b['id'])
@@ -98,3 +98,10 @@ for a in listatenant:
         for snapvolu in totalsnap_volu:
             if a in snapvolu.tenant_id:
                 print snapvolu.name
+                
+#Eliminar todos los volumenes asociadas a un proyecto.
+        print "El proyecto %s tiene los volumenes:" %  a
+        totalvolu=cinder.volumes.list(search_opts={'all_tenants': True})
+        for i in totalvolu:
+            if a in i._info['os-vol-tenant-attr:tenant_id']:
+                print i.name
