@@ -141,3 +141,9 @@ else:
             redes=neutron.list_networks(tenant_id=a)
             for i in redes["networks"]:
                 print i['name']
+                
+#Eliminar todos las subredes de un proyecto.
+            print "El proyecto %s tiene las subredes:" %  a   
+            subredes=neutron.list_subnets(tenant_id=a)
+            for i in subredes["subnets"]:
+                print i['name']
