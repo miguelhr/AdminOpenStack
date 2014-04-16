@@ -118,6 +118,7 @@ for a in listatenant:
                 print b['floating_ip_address']
                 
 #Eliminar todos las imagenes de un proyecto.
+        print "El proyecto %s tiene las imagenes:" %  a
         name={}
         tenant_id={}
         listaimage=glance.images.list()
