@@ -3,6 +3,7 @@ from keystoneclient.v2_0 import client
 from neutronclient.v2_0 import client as neuclient
 from cinderclient.v2 import client as cinderclient
 import glanceclient.v2.client as glclient
+import commands
 
 import sys 
 import os
