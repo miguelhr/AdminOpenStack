@@ -135,3 +135,9 @@ else:
             routers=neutron.list_routers(tenant_id=a)
             for i in routers["routers"]:
                 print i['name']
+                
+#Eliminar todos las redes de un proyecto.
+            print "El proyecto %s tiene las redes:" %  a
+            redes=neutron.list_networks(tenant_id=a)
+            for i in redes["networks"]:
+                print i['name']
