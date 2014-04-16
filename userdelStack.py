@@ -47,12 +47,12 @@ else:
     creds2 = get_keystone_creds()
     credentials = get_credentials()
     creds3 = get_cinder_credentials()
-    glance_endpoint = keystone.service_catalog.url_for(service_type='image',endpoint_type='publicURL')
 
     nova = nvclient.Client(**creds)
     keystone = client.Client(**creds2)
     neutron = neuclient.Client(**credentials)
     cinder = cinderclient.Client(*creds3)
+    glance_endpoint = keystone.service_catalog.url_for(service_type='image',endpoint_type='publicURL')
     glance = glclient.Client(glance_endpoint, token=keystone.auth_token)
 
 #Obtener informacion de usuario.
@@ -116,3 +116,14 @@ for a in listatenant:
             for b in totalipflota[i]:
                 if a in b['tenant_id']:
                 print b['floating_ip_address']
+                
+#Eliminar todos las imagenes de un proyecto.
+        name={}
+        tenant_id={}
+        listaimage=glance.images.list()
+        for i in listaimage:
+            resultado = commands.getoutput("glance show %s" % i.id)
+            tenant_id['id_proyecto']= resultado.split(' ')[20].split('\n')[0]
+            name['nombre']=i.name
+            if a in tenant_id['id_proyecto']:
+                print name ,i.id
