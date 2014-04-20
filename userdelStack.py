@@ -133,13 +133,17 @@ else:
                 tenant_id['id_proyecto']= resultado.split(' ')[20].split('\n')[0]
                 name['nombre']=i.name
                 if a in tenant_id['id_proyecto']:
-                    print name ,i.id
+                    print i.name ,i.id
 
 #Eliminar todos los routers de un proyecto.
-            print "El proyecto %s tiene los routers:" %  a
             routers=neutron.list_routers(tenant_id=a)
             for i in routers["routers"]:
-                print i['name']
+                neutron.remove_gateway_router(i["id"])
+                for port in neutron.list_ports(tenant_id=a)["ports"]:
+                    if port["device_id"] == i["id"]:
+                        neutron.remove_interface_router(i["id"],{'port_id':port["id"]})
+                        neutron.delete_router(i["id"])
+                        print i['name']
                 
 #Eliminar todos las redes de un proyecto.
             print "El proyecto %s tiene las redes:" %  a
