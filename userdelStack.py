@@ -93,10 +93,11 @@ else:
             for i in totalgruposeguridad:
                 for b in totalgruposeguridad[i]:
                     if a in b['tenant_id']:
-                    print b['name']
-                    neutron.delete_security_group(b['id'])
+                        print b['name']
+                        neutron.delete_security_group(b['id'])
 
 #Eliminar todos los snapshots de volumenes asociadas a un proyecto.
+            print "El proyecto %s tiene los snapshots de volumenes:" %  a
             name={}
             tenant_id={}
             totalsnap_volu=cinder.volume_snapshots.list(search_opts={'all_tenants': True})
@@ -120,7 +121,7 @@ else:
             for i in totalipflota:
                 for b in totalipflota[i]:
                     if a in b['tenant_id']:
-                    print b['floating_ip_address']
+                        print b['floating_ip_address']
                 
 #Eliminar todos las imagenes de un proyecto.
             print "El proyecto %s tiene las imagenes:" %  a
