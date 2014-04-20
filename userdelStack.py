@@ -98,14 +98,10 @@ else:
 
 #Eliminar todos los snapshots de volumenes asociadas a un proyecto.
             print "El proyecto %s tiene los snapshots de volumenes:" %  a
-            name={}
-            tenant_id={}
             totalsnap_volu=cinder.volume_snapshots.list(search_opts={'all_tenants': True})
             for i in totalsnap_volu:
                 resultado = commands.getoutput("cinder  snapshot-show %s" % i.id)
-                tenant_id['id_proyecto']= resultado.split('|')[23].strip()
-                name['nombre']=i.name
-                if a in tenant_id['id_proyecto']:
+                if a in resultado.split('|')[23].strip():
                     print i.name ,i.id
                 
 #Eliminar todos los volumenes asociadas a un proyecto.
@@ -125,14 +121,10 @@ else:
                 
 #Eliminar todos las imagenes de un proyecto.
             print "El proyecto %s tiene las imagenes:" %  a
-            name={}
-            tenant_id={}
             listaimage=glance.images.list()
             for i in listaimage:
                 resultado = commands.getoutput("glance show %s" % i.id)
-                tenant_id['id_proyecto']= resultado.split(' ')[20].split('\n')[0]
-                name['nombre']=i.name
-                if a in tenant_id['id_proyecto']:
+                if a in resultado.split(' ')[20].split('\n')[0]:
                     print i.name ,i.id
 
 #Eliminar todos los routers de un proyecto.
