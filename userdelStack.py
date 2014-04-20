@@ -97,11 +97,15 @@ else:
                     neutron.delete_security_group(b['id'])
 
 #Eliminar todos los snapshots de volumenes asociadas a un proyecto.
-            print "El proyecto %s tiene los snapshots de volumenes:" %  a
+            name={}
+            tenant_id={}
             totalsnap_volu=cinder.volume_snapshots.list(search_opts={'all_tenants': True})
-            for snapvolu in totalsnap_volu:
-                if a in snapvolu.tenant_id:
-                    print snapvolu.name
+            for i in totalsnap_volu:
+                resultado = commands.getoutput("cinder  snapshot-show %s" % i.id)
+                tenant_id['id_proyecto']= resultado.split('|')[23].strip()
+                name['nombre']=i.name
+                if a in tenant_id['id_proyecto']:
+                    print i.name ,i.id
                 
 #Eliminar todos los volumenes asociadas a un proyecto.
             print "El proyecto %s tiene los volumenes:" %  a
