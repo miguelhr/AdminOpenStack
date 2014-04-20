@@ -4,6 +4,7 @@ from neutronclient.v2_0 import client as neuclient
 from cinderclient.v2 import client as cinderclient
 import glanceclient.v2.client as glclient
 import commands
+from keystoneclient.apiclient import exceptions as api_exceptions
 
 import sys 
 import os
@@ -57,8 +58,13 @@ else:
     glance = glclient.Client(glance_endpoint, token=keystone.auth_token)
 
 #Obtener informacion de usuario.
-    infousuario = keystone.users.find(name=sys.argv[1])
-    listatenant=[];
+    try:
+        infousuario = keystone.users.find(name=sys.argv[1])
+        listatenant=[];
+        
+    except api_exceptions.NotFound:
+        print "no existe el usuario %s." % sys.argv[1]
+        sys.exit(0)
 
 #Obtener proyectos del usuario elegido.
     print "El usuario %s tiene los proyectos:" %  infousuario.name
@@ -66,7 +72,7 @@ else:
         for tenant_user in tenant.list_users():
             if infousuario.id in tenant_user.id:
                 listatenant.append(tenant.id)
-                print tenant.name
+                print tenant.name, tenant.id
 
 #Que proyectos pertenecen a mas de un usuario.
     for a in listatenant:
