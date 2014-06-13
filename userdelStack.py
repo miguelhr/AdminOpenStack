@@ -44,7 +44,82 @@ else:
         os.environ['OS_TENANT_NAME'],
         os.environ['OS_AUTH_URL']]
         return d
-        
+       
+#Eliminar todas las instancias asociadas a un proyecto.
+    def instancias():
+        print "El proyecto %s tiene las instancias:" % a
+        totalinstancias=nova.servers.list(search_opts={'all_tenants': True})
+        for instancias in totalinstancias:
+            if a in instancias.tenant_id:
+                print instancias.name
+#                nova.servers.delete(instancias.id)
+
+#Eliminar todos los grupos de seguridad asociadas a un proyecto.
+    def gruposeguridad():
+        print "El proyecto %s tiene los grupos de seguridad:" % a
+        totalgruposeguridad = neutron.list_security_groups()
+        for i in totalgruposeguridad:
+            for b in totalgruposeguridad[i]:
+                if a in b['tenant_id']:
+                    print b['name']
+#                    neutron.delete_security_group(b['id'])
+
+#Eliminar todos los snapshots de volumenes asociadas a un proyecto.
+    def snapshoptvolumenes():
+        print "El proyecto %s tiene los snapshots de volumenes:" % a
+        totalsnap_volu=cinder.volume_snapshots.list(search_opts={'all_tenants': True})
+        for i in totalsnap_volu:
+            resultado = commands.getoutput("cinder  snapshot-show %s" % i.id)
+            if a in resultado.split('|')[23].strip():
+                print i.name ,i.id
+
+#Eliminar todos los volumenes asociadas a un proyecto.
+    def volumenes():
+        print "El proyecto %s tiene los volumenes:" % a
+        totalvolu=cinder.volumes.list(search_opts={'all_tenants': True})
+        for i in totalvolu:
+            if a in i._info['os-vol-tenant-attr:tenant_id']:
+                print i.name
+
+#Eliminar todos las IP flotantes de un proyecto.
+    def ipflotante():
+        print "El proyecto %s tiene las IP flotantes:" % a
+        totalipflota = neutron.list_floatingips()
+        for i in totalipflota:
+            for b in totalipflota[i]:
+                if a in b['tenant_id']:
+                    print b['floating_ip_address']
+
+#Eliminar todos las imagenes de un proyecto.
+    def imagenes():
+        print "El proyecto %s tiene las imagenes:" % a
+        listaimage=glance.images.list()
+        for i in listaimage:
+            resultado = commands.getoutput("glance show %s" % i.id)
+            if a in resultado.split(' ')[20].split('\n')[0]:
+                print i.name ,i.id
+
+#Eliminar todos los routers de un proyecto.
+    def routers():
+        print "El proyecto %s tiene los routers:" % a
+        routers=neutron.list_routers(tenant_id=a)
+        for i in routers["routers"]:
+            print i['name']
+
+#Eliminar todos las redes de un proyecto.
+    def redes():
+        print "El proyecto %s tiene las redes:" % a
+        redes=neutron.list_networks(tenant_id=a)
+        for i in redes["networks"]:
+            print i['name']
+
+#Eliminar todos las subredes de un proyecto.
+    def subredes():
+        print "El proyecto %s tiene las subredes:" % a  
+        subredes=neutron.list_subnets(tenant_id=a)
+        for i in subredes["subnets"]:
+            print i['name']
+
     creds = get_nova_creds()
     creds2 = get_keystone_creds()
     credentials = get_credentials()
@@ -61,7 +136,7 @@ else:
     try:
         infousuario = keystone.users.find(name=sys.argv[1])
         listatenant=[];
-        
+
     except api_exceptions.NotFound:
         print "no existe el usuario %s." % sys.argv[1]
         sys.exit(0)
@@ -84,73 +159,12 @@ else:
                 print i.name
         else:
             print "se va a eliminar el proyecto con id %s" % a
-
-#Eliminar todas las instancias asociadas a un proyecto.
-            print "El proyecto %s tiene las instancias:" %  a
-            totalinstancias=nova.servers.list(search_opts={'all_tenants': True})
-            for instancias in totalinstancias:
-                if a in instancias.tenant_id:
-                    print instancias.name
-                    nova.servers.delete(instancias.id)
-
-#Eliminar todos los grupos de seguridad asociadas a un proyecto.
-            print "El proyecto %s tiene los grupos de seguridad:" %  a
-            totalgruposeguridad = neutron.list_security_groups()
-            for i in totalgruposeguridad:
-                for b in totalgruposeguridad[i]:
-                    if a in b['tenant_id']:
-                        print b['name']
-                        neutron.delete_security_group(b['id'])
-
-#Eliminar todos los snapshots de volumenes asociadas a un proyecto.
-            print "El proyecto %s tiene los snapshots de volumenes:" %  a
-            totalsnap_volu=cinder.volume_snapshots.list(search_opts={'all_tenants': True})
-            for i in totalsnap_volu:
-                resultado = commands.getoutput("cinder  snapshot-show %s" % i.id)
-                if a in resultado.split('|')[23].strip():
-                    print i.name ,i.id
-                
-#Eliminar todos los volumenes asociadas a un proyecto.
-            print "El proyecto %s tiene los volumenes:" %  a
-            totalvolu=cinder.volumes.list(search_opts={'all_tenants': True})
-            for i in totalvolu:
-                if a in i._info['os-vol-tenant-attr:tenant_id']:
-                    print i.name
-                
-#Eliminar todos las IP flotantes de un proyecto.
-            print "El proyecto %s tiene las IP flotantes:" %  a
-            totalipflota = neutron.list_floatingips()
-            for i in totalipflota:
-                for b in totalipflota[i]:
-                    if a in b['tenant_id']:
-                        print b['floating_ip_address']
-                
-#Eliminar todos las imagenes de un proyecto.
-            print "El proyecto %s tiene las imagenes:" %  a
-            listaimage=glance.images.list()
-            for i in listaimage:
-                resultado = commands.getoutput("glance show %s" % i.id)
-                if a in resultado.split(' ')[20].split('\n')[0]:
-                    print i.name ,i.id
-
-#Eliminar todos los routers de un proyecto.
-            routers=neutron.list_routers(tenant_id=a)
-            for i in routers["routers"]:
-                neutron.remove_gateway_router(i["id"])
-                for port in neutron.list_ports(tenant_id=a)["ports"]:
-                    if port["device_id"] == i["id"]:
-                        neutron.remove_interface_router(i["id"],{'port_id':port["id"]})
-                        neutron.delete_router(i["id"])
-                        print i['name']
-                
-#Eliminar todos las redes de un proyecto.
-            print "El proyecto %s tiene las redes:" %  a
-            redes=neutron.list_networks(tenant_id=a)
-            for i in redes["networks"]:
-                print i['name']
-                
-#Eliminar todos las subredes de un proyecto.
-            print "El proyecto %s tiene las subredes:" %  a   
-            subredes=neutron.list_subnets(tenant_id=a)
-            for i in subredes["subnets"]:
-                print i['name']
+            instancias()
+            gruposeguridad()
+            snapshoptvolumenes()
+            volumenes()
+            ipflotante()
+            imagenes()
+            routers()
+            redes()
+            subredes() 
