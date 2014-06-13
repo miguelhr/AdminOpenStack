@@ -9,9 +9,9 @@ from keystoneclient.apiclient import exceptions as api_exceptions
 import sys 
 import os
 
-if len(sys.argv) > 2 or len(sys.argv) < 2:
+if len(sys.argv) > 3 or len(sys.argv) < 3 or sys.argv[1]!="-completo" and sys.argv[1]!="-parcial":
     print "Por favor, si quiere eliminar un usuario, la sitaxis es"
-    print "userdelStack.py <usuario>"
+    print "userdelStack.py <-completo o -parcial> <usuario>"
 
 else:
     def get_keystone_creds():
@@ -102,7 +102,7 @@ else:
         for i in listaimage:
             resultado = commands.getoutput("glance show %s" % i.id)
             if a in resultado.split(' ')[20].split('\n')[0]:
-                contador=contador+1
+                contador=contador+1        
         if contador>0:
             print "El proyecto %s tiene las imagenes:" % a
             listaimage=glance.images.list()
@@ -149,11 +149,11 @@ else:
 
 #Obtener informacion de usuario.
     try:
-        infousuario = keystone.users.find(name=sys.argv[1])
+        infousuario = keystone.users.find(name=sys.argv[2])
         listatenant=[];
 
     except api_exceptions.NotFound:
-        print "no existe el usuario %s." % sys.argv[1]
+        print "no existe el usuario %s." % sys.argv[2]
         sys.exit(0)
 
 #Obtener proyectos del usuario elegido.
@@ -173,13 +173,16 @@ else:
             for i in usutenant:
                 print i.name
         else:
-            print "se va a eliminar el proyecto con id %s" % a
-            instancias()
-            gruposeguridad()
-            snapshoptvolumenes()
-            volumenes()
-            ipflotante()
-            imagenes()
-            routers()
-            redes()
-            subredes() 
+            if sys.argv[1]=="-parcial":
+                print "se va a eliminar cierto contenido de el proyecto con id %s" % a
+                instancias()
+                gruposeguridad()
+                snapshoptvolumenes()
+                volumenes()
+                ipflotante()
+                imagenes()
+                routers()
+                redes()
+                subredes() 
+            if sys.argv[1]=="-completo":
+                print "se va a eliminar todo el proyecto con id completo %s" % a
