@@ -101,12 +101,16 @@ else:
         contador=0
         for i in listaimage:
             resultado = commands.getoutput("glance show %s" % i.id)
-            if len(resultado)>0:
-                if contador==0:
-                    print "El proyecto %s tiene las imagenes:" % a
+            if a in resultado.split(' ')[20].split('\n')[0]:
+                contador=contador+1
+        if contador>0:
+            print "El proyecto %s tiene las imagenes:" % a
+            listaimage=glance.images.list()
+            for i in listaimage:
+                resultado = commands.getoutput("glance show %s" % i.id)
                 if a in resultado.split(' ')[20].split('\n')[0]:
                     print i.name ,i.id
-                    contador=contador+1
+
 #Eliminar todos los routers de un proyecto.
     def routers():
         routers=neutron.list_routers(tenant_id=a)
