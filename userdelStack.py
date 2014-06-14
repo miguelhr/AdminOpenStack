@@ -82,7 +82,7 @@ else:
                 if a in resultado.split('|')[23].strip():
                     print i.name ,i.id
                     cinder.volume_snapshots.delete(i.id)
-                    
+
 #Eliminar todos los volumenes asociadas a un proyecto.
     def volumenes():
         totalvolu=cinder.volumes.list(search_opts={'all_tenants': True})
@@ -95,13 +95,12 @@ else:
             for i in totalvolu:
                 if a in i._info['os-vol-tenant-attr:tenant_id']:
                     print i.name
-                    cinder.volumes.delete(volume=i.id)
-
+                    cinder.volumes.delete(volume=i.id)                    
 
 #Eliminar todos las IP flotantes de un proyecto.
     def ipflotante():
         totalipflota = neutron.list_floatingips()
-        if len(totalipflota)>0:
+        if len(totalipflota['floatingips'])>0:
             print "El proyecto %s tiene las IP flotantes:" % a
             for i in totalipflota:
                 for b in totalipflota[i]:
@@ -129,17 +128,19 @@ else:
 #Eliminar todos los routers de un proyecto.
     def routers():
         routers=neutron.list_routers(tenant_id=a)
-        if len(routers)>0:
+        if len(routers['routers'])>0:
+            print "El proyecto %s tiene los routers:" % a
             for i in routers["routers"]:
-                print "El proyecto %s tiene los routers:" % a
                 print i['name']
+                neutron.delete_router(i['id'])
+                
 
 #Eliminar todos las redes de un proyecto.
     def redes():
         redes=neutron.list_networks(tenant_id=a)
         if len(redes)>0:
+            print "El proyecto %s tiene las redes:" % a
             for i in redes["networks"]:
-                print "El proyecto %s tiene las redes:" % a
                 print i['name']
 
 #Eliminar todos las subredes de un proyecto.
