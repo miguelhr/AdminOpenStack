@@ -102,11 +102,12 @@ else:
     def ipflotante():
         totalipflota = neutron.list_floatingips()
         if len(totalipflota)>0:
+            print "El proyecto %s tiene las IP flotantes:" % a
             for i in totalipflota:
                 for b in totalipflota[i]:
                     if a in b['tenant_id']:
-                        print "El proyecto %s tiene las IP flotantes:" % a
-                        print b['floating_ip_address']
+                        print b['floating_ip_address']                        
+                        neutron.delete_floatingip(b['id'])
 
 #Eliminar todos las imagenes de un proyecto.
     def imagenes():
