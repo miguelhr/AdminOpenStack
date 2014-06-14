@@ -58,7 +58,12 @@ else:
 #Eliminar todos los grupos de seguridad asociadas a un proyecto.
     def gruposeguridad():
         totalgruposeguridad = neutron.list_security_groups()
-        if len(totalgruposeguridad)>0:
+        contador=0
+        for i in totalgruposeguridad:
+            for b in totalgruposeguridad[i]:
+                if a in b['tenant_id']:
+                    contador=contador+1      
+        if contador>0:
             print "El proyecto %s tiene los grupos de seguridad:" % a
             for i in totalgruposeguridad:
                 for b in totalgruposeguridad[i]:
