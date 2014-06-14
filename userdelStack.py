@@ -49,11 +49,11 @@ else:
     def instancias():
         totalinstancias=nova.servers.list(search_opts={'all_tenants': True})
         if len(totalinstancias)>0:
+            print "El proyecto %s tiene las instancias:" % a
             for instancias in totalinstancias:
                 if a in instancias.tenant_id:
-                    print "El proyecto %s tiene las instancias:" % a
                     print instancias.name
-#                    nova.servers.delete(instancias.id)
+                    nova.servers.delete(instancias.id)
 
 #Eliminar todos los grupos de seguridad asociadas a un proyecto.
     def gruposeguridad():
