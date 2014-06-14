@@ -79,11 +79,17 @@ else:
 #Eliminar todos los volumenes asociadas a un proyecto.
     def volumenes():
         totalvolu=cinder.volumes.list(search_opts={'all_tenants': True})
-        if len(totalvolu)>0:
+        contador=0
+        for i in totalvolu:
+            if a in i._info['os-vol-tenant-attr:tenant_id']:
+                contador=contador+1
+        if contador>0:
+            print "El proyecto %s tiene los volumenes:" % a
             for i in totalvolu:
                 if a in i._info['os-vol-tenant-attr:tenant_id']:
-                    print "El proyecto %s tiene los volumenes:" % a
                     print i.name
+                    cinder.volumes.delete(volume=i.id)
+
 
 #Eliminar todos las IP flotantes de un proyecto.
     def ipflotante():
