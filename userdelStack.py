@@ -203,3 +203,12 @@ else:
                 subredes() 
             if sys.argv[1]=="-completo":
                 print "se va a eliminar todo el proyecto con id completo %s" % a
+                instancias()
+                gruposeguridad()
+                snapshoptvolumenes()
+                volumenes()
+                ipflotante()
+                imagenes()
+                routers()
+                redes()
+                subredes()
