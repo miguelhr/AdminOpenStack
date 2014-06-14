@@ -151,6 +151,11 @@ else:
             for i in redes["networks"]:
                 print i['name']
                 neutron.delete_network(i['id'])
+                
+#Eliminar usuario.
+    def usuario():
+        print "Se va a eliminar el usuario %s" % sys.argv[2]
+        keystone.users.delete(keystone.users.find(name=sys.argv[2]).id)
 
     creds = get_nova_creds()
     creds2 = get_keystone_creds()
@@ -212,3 +217,4 @@ else:
                 routers()
                 redes()
                 subredes()
+                usuario()
