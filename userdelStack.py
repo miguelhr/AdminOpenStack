@@ -124,6 +124,7 @@ else:
                 resultado = commands.getoutput("glance show %s" % i.id)
                 if a in resultado.split(' ')[20].split('\n')[0]:
                     print i.name ,i.id
+                    glance.images.delete(i.id)
 
 #Eliminar todos los routers de un proyecto.
     def routers():
