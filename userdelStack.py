@@ -69,13 +69,20 @@ else:
 #Eliminar todos los snapshots de volumenes asociadas a un proyecto.
     def snapshoptvolumenes():
         totalsnap_volu=cinder.volume_snapshots.list(search_opts={'all_tenants': True})
-        if len(totalsnap_volu)>0:
+        contador=0
+        for i in totalsnap_volu:
+            resultado = commands.getoutput("cinder  snapshot-show %s" % i.id)
+            if a in resultado.split('|')[23].strip():
+                contador=contador+1        
+        if contador>0:
+            print "El proyecto %s tiene los snapshots de volumenes:" % a
+            totalsnap_volu=cinder.volume_snapshots.list(search_opts={'all_tenants': True})
             for i in totalsnap_volu:
                 resultado = commands.getoutput("cinder  snapshot-show %s" % i.id)
                 if a in resultado.split('|')[23].strip():
-                    print "El proyecto %s tiene los snapshots de volumenes:" % a
                     print i.name ,i.id
-
+                    cinder.volume_snapshots.delete(i.id)
+                    
 #Eliminar todos los volumenes asociadas a un proyecto.
     def volumenes():
         totalvolu=cinder.volumes.list(search_opts={'all_tenants': True})
