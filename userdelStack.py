@@ -59,12 +59,12 @@ else:
     def gruposeguridad():
         totalgruposeguridad = neutron.list_security_groups()
         if len(totalgruposeguridad)>0:
+            print "El proyecto %s tiene los grupos de seguridad:" % a
             for i in totalgruposeguridad:
                 for b in totalgruposeguridad[i]:
                     if a in b['tenant_id']:
-                        print "El proyecto %s tiene los grupos de seguridad:" % a
                         print b['name']
-#                        neutron.delete_security_group(b['id'])
+                        neutron.delete_security_group(b['id'])
 
 #Eliminar todos los snapshots de volumenes asociadas a un proyecto.
     def snapshoptvolumenes():
