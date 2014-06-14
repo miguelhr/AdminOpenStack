@@ -134,22 +134,23 @@ else:
                 print i['name']
                 neutron.delete_router(i['id'])
                 
+#Eliminar todos las subredes de un proyecto.
+    def subredes():
+        subredes=neutron.list_subnets(tenant_id=a)
+        if len(subredes['subnets'])>0:
+            print "El proyecto %s tiene las subredes:" % a
+            for i in subredes["subnets"]:
+                print i['name']
+                neutron.delete_subnet(i['id'])
 
 #Eliminar todos las redes de un proyecto.
     def redes():
         redes=neutron.list_networks(tenant_id=a)
-        if len(redes)>0:
+        if len(redes['networks'])>0:
             print "El proyecto %s tiene las redes:" % a
             for i in redes["networks"]:
                 print i['name']
-
-#Eliminar todos las subredes de un proyecto.
-    def subredes():
-        subredes=neutron.list_subnets(tenant_id=a)
-        if len(subredes)>0:
-            for i in subredes["subnets"]:
-                print "El proyecto %s tiene las subredes:" % a 
-                print i['name']
+                neutron.delete_network(i['id'])
 
     creds = get_nova_creds()
     creds2 = get_keystone_creds()
