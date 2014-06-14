@@ -156,6 +156,11 @@ else:
     def usuario():
         print "Se va a eliminar el usuario %s" % sys.argv[2]
         keystone.users.delete(keystone.users.find(name=sys.argv[2]).id)
+        
+#Eliminar proyecto.
+    def proyecto():
+        print "Se va a eliminar el proyecto con id %s" % a
+        keystone.tenants.delete(a)
 
     creds = get_nova_creds()
     creds2 = get_keystone_creds()
@@ -218,3 +223,4 @@ else:
                 redes()
                 subredes()
                 usuario()
+                proyecto()
