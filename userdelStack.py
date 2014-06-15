@@ -72,8 +72,9 @@ else:
             for b in totalgruposeguridad[i]:
                 if a in b['tenant_id']:
                     contador=contador+1      
-        if contador>0:
+        if contador>1:
             print "El proyecto %s tiene los grupos de seguridad:" % a
+            totalgruposeguridad = neutron.list_security_groups() 
             for i in totalgruposeguridad:
                 for b in totalgruposeguridad[i]:
                     if a in b['tenant_id']:
@@ -165,12 +166,12 @@ else:
             for i in redes["networks"]:
                 print i['name']
                 neutron.delete_network(i['id'])
-                
+
 #Eliminar usuario.
     def usuario():
         print "Se va a eliminar el usuario %s" % sys.argv[2]
         keystone.users.delete(keystone.users.find(name=sys.argv[2]).id)
-        
+
 #Eliminar proyecto.
     def proyecto():
         print "Se va a eliminar el proyecto con id %s" % a
@@ -215,26 +216,26 @@ else:
                 print i.name
         else:
             if sys.argv[1]=="-parcial":
-                print "se va a eliminar cierto contenido de el proyecto con id %s" % a
+                print "se va a eliminar el contenido de el proyecto con id %s" % a
                 instancias()
-                gruposeguridad()
                 snapshoptvolumenes()
+                gruposeguridad()
                 volumenes()
                 ipflotante()
                 imagenes()
                 routers()
-                redes()
-                subredes() 
-            if sys.argv[1]=="-completo":
-                print "se va a eliminar todo el proyecto con id completo %s" % a
-                instancias()
-                gruposeguridad()
-                snapshoptvolumenes()
-                volumenes()
-                ipflotante()
-                imagenes()
-                routers()
-                redes()
                 subredes()
+                redes()
+            if sys.argv[1]=="-completo":
+                print "se va a eliminar el proyecto y todo su contenido con id %s" % a
+                instancias()
+                snapshoptvolumenes()
+                gruposeguridad()
+                volumenes()
+                ipflotante()
+                imagenes()
+                routers()
+                subredes()
+                redes()
                 usuario()
                 proyecto()
