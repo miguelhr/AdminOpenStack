@@ -146,9 +146,12 @@ else:
         routers=neutron.list_routers(tenant_id=a)
         if len(routers['routers'])>0:
             print "El proyecto %s tiene los routers:" % a
-            for i in routers["routers"]:
-                print i['name']
-                neutron.delete_router(i['id'])
+            for router in neutron.list_routers(tenant_id=a)["routers"]:
+                neutron.remove_gateway_router(router["id"])
+                for port in neutron.list_ports(tenant_id=a)["ports"]:
+                    if port["device_id"] == router["id"]:
+                        neutron.remove_interface_router(router["id"],{'port_id':port["id"]})
+                        neutron.delete_router(router["id"])
                 
 #Eliminar todos las subredes de un proyecto.
     def subredes():
