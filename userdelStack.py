@@ -5,7 +5,7 @@ from cinderclient.v2 import client as cinderclient
 import glanceclient.v2.client as glclient
 import commands
 from keystoneclient.apiclient import exceptions as api_exceptions
-
+import time
 import sys 
 import os
 
@@ -97,6 +97,7 @@ else:
                 if a in resultado.split('|')[23].strip():
                     print i.name ,i.id
                     cinder.volume_snapshots.delete(i.id)
+            time.sleep(4)
 
 #Eliminar todos los volumenes asociadas a un proyecto.
     def volumenes():
@@ -110,7 +111,7 @@ else:
             for i in totalvolu:
                 if a in i._info['os-vol-tenant-attr:tenant_id']:
                     print i.name
-                    cinder.volumes.delete(volume=i.id)                    
+                    cinder.volumes.delete(volume=i.id)   
 
 #Eliminar todos las IP flotantes de un proyecto.
     def ipflotante():
