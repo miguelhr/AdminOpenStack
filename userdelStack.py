@@ -48,11 +48,20 @@ else:
 #Eliminar todas las instancias asociadas a un proyecto.
     def instancias():
         totalinstancias=nova.servers.list(search_opts={'all_tenants': True})
-        if len(totalinstancias)>0:
+        contador=0
+        for instancias in totalinstancias:
+            if a in instancias.tenant_id:
+                contador=contador+1
+        if contador>0:
             print "El proyecto %s tiene las instancias:" % a
             for instancias in totalinstancias:
                 if a in instancias.tenant_id:
                     print instancias.name
+                    totalgruposeguridad = neutron.list_security_groups()
+                    for i in totalgruposeguridad:
+                        for b in totalgruposeguridad[i]:
+                            if a in b['tenant_id'] and b['name']==instancias.security_groups[0]['name']:
+                                nova.servers.remove_security_group(instancias.id,b['id'])
                     nova.servers.delete(instancias.id)
 
 #Eliminar todos los grupos de seguridad asociadas a un proyecto.
