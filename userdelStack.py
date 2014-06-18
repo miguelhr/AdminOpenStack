@@ -5,6 +5,10 @@ from cinderclient.v2 import client as cinderclient
 import glanceclient.v2.client as glclient
 import commands
 from keystoneclient.apiclient import exceptions as api_exceptions
+from credentials import get_keystone_creds
+from credentials import get_nova_creds
+from credentials import get_credentials
+from credentials import get_cinder_credentials
 import time
 import sys 
 import os
@@ -14,37 +18,6 @@ if len(sys.argv) > 3 or len(sys.argv) < 3 or sys.argv[1]!="-completo" and sys.ar
     print "userdelStack.py <-completo o -parcial> <usuario>"
 
 else:
-    def get_keystone_creds():
-        d = {}
-        d['username'] = os.environ['OS_USERNAME']
-        d['password'] = os.environ['OS_PASSWORD']
-        d['auth_url'] = os.environ['OS_AUTH_URL']
-        d['tenant_name'] = os.environ['OS_TENANT_NAME']
-        return d
-
-    def get_nova_creds():
-        d = {}
-        d['username'] = os.environ['OS_USERNAME']
-        d['api_key'] = os.environ['OS_PASSWORD']
-        d['auth_url'] = os.environ['OS_AUTH_URL']
-        d['project_id'] = os.environ['OS_TENANT_NAME']
-        return d
-        
-    def get_credentials():
-        d = {}
-        d['username'] = os.environ['OS_USERNAME']
-        d['password'] = os.environ['OS_PASSWORD']
-        d['auth_url'] = os.environ['OS_AUTH_URL']
-        d['tenant_name'] = os.environ['OS_TENANT_NAME']
-        return d
-    
-    def get_cinder_credentials():
-        d = [os.environ['OS_USERNAME'],
-        os.environ['OS_PASSWORD'],
-        os.environ['OS_TENANT_NAME'],
-        os.environ['OS_AUTH_URL']]
-        return d
-       
 #Eliminar todas las instancias asociadas a un proyecto.
     def instancias():
         totalinstancias=nova.servers.list(search_opts={'all_tenants': True})
