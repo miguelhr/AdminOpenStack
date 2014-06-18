@@ -1,3 +1,4 @@
+import os
 def get_keystone_creds():
     d = {}
     d['username'] = os.environ['OS_USERNAME']
