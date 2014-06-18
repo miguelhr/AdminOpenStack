@@ -1,30 +1,30 @@
 def get_keystone_creds():
     d = {}
-        d['username'] = os.environ['OS_USERNAME']
-        d['password'] = os.environ['OS_PASSWORD']
-        d['auth_url'] = os.environ['OS_AUTH_URL']
-        d['tenant_name'] = os.environ['OS_TENANT_NAME']
-        return d
+    d['username'] = os.environ['OS_USERNAME']
+    d['password'] = os.environ['OS_PASSWORD']
+    d['auth_url'] = os.environ['OS_AUTH_URL']
+    d['tenant_name'] = os.environ['OS_TENANT_NAME']
+    return d
 
 def get_nova_creds():
-        d = {}
-        d['username'] = os.environ['OS_USERNAME']
-        d['api_key'] = os.environ['OS_PASSWORD']
-        d['auth_url'] = os.environ['OS_AUTH_URL']
-        d['project_id'] = os.environ['OS_TENANT_NAME']
-        return d
+    d = {}
+    d['username'] = os.environ['OS_USERNAME']
+    d['api_key'] = os.environ['OS_PASSWORD']
+    d['auth_url'] = os.environ['OS_AUTH_URL']
+    d['project_id'] = os.environ['OS_TENANT_NAME']
+    return d
         
 def get_credentials():
-        d = {}
-        d['username'] = os.environ['OS_USERNAME']
-        d['password'] = os.environ['OS_PASSWORD']
-        d['auth_url'] = os.environ['OS_AUTH_URL']
-        d['tenant_name'] = os.environ['OS_TENANT_NAME']
-        return d
+    d = {}
+    d['username'] = os.environ['OS_USERNAME']
+    d['password'] = os.environ['OS_PASSWORD']
+    d['auth_url'] = os.environ['OS_AUTH_URL']
+    d['tenant_name'] = os.environ['OS_TENANT_NAME']
+    return d
     
 def get_cinder_credentials():
-        d = [os.environ['OS_USERNAME'],
-        os.environ['OS_PASSWORD'],
-        os.environ['OS_TENANT_NAME'],
-        os.environ['OS_AUTH_URL']]
-        return d
+    d = [os.environ['OS_USERNAME'],
+    os.environ['OS_PASSWORD'],
+    os.environ['OS_TENANT_NAME'],
+    os.environ['OS_AUTH_URL']]
+    return d
