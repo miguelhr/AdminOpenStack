@@ -151,6 +151,7 @@ else:
                 for port in neutron.list_ports(tenant_id=a)["ports"]:
                     if port["device_id"] == router["id"]:
                         neutron.remove_interface_router(router["id"],{'port_id':port["id"]})
+                        print router["name"]
                         neutron.delete_router(router["id"])
                 
 #Eliminar todos las subredes de un proyecto.
