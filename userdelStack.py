@@ -7,7 +7,6 @@ import commands
 from keystoneclient.apiclient import exceptions as api_exceptions
 from credentials import get_keystone_creds
 from credentials import get_nova_creds
-from credentials import get_credentials
 from credentials import get_cinder_credentials
 import time
 import sys 
@@ -162,12 +161,11 @@ else:
 
     creds = get_nova_creds()
     creds2 = get_keystone_creds()
-    credentials = get_credentials()
     creds3 = get_cinder_credentials()
 
     nova = nvclient.Client(**creds)
     keystone = client.Client(**creds2)
-    neutron = neuclient.Client(**credentials)
+    neutron = neuclient.Client(**creds2)
     cinder = cinderclient.Client(*creds3)
     glance_endpoint = keystone.service_catalog.url_for(service_type='image',endpoint_type='publicURL')
     glance = glclient.Client(glance_endpoint, token=keystone.auth_token)
