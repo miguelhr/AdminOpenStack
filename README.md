@@ -1,7 +1,7 @@
 AdminOpenStack
 ==============
 
-Aplicaciones de administración de la API Python de OpenStack
+Aplicaciones de administración de las APIs Python de OpenStack
 
 Tendremos que definir varias variables de entorno:
 
